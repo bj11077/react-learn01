@@ -63,8 +63,8 @@ function App(){
           <Link to="/">Home</Link>
           <Link to="/about">About</Link>
           <Link to="/profile">Profile</Link>
-          <div>API예제임<button onClick={getApi}>API EXAM</button></div>
-          apis: {apis}
+          {/* <div>API예제임<button onClick={getApi}>API EXAM</button></div>
+          apis: {apis} */}
         </nav>
 
         <Routes>

@@ -1,35 +1,57 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { TableRow } from '@material-ui/core';
 import { TableCell } from '@material-ui/core';
 import { TableHead } from '@material-ui/core';
 import { TableBody } from '@material-ui/core';
 import { Table } from '@material-ui/core';
 import Axios from 'axios';
+import {withStyles} from '@material-ui/core/styles';
+import BoardBody from './BoardBody';
 
 function FreeBoard(props) {
-       Axios.get("/board").then(
-    (response) => {
-      console.log(response);
-       
-    }
-    );
+
+    let [boardData,setBoardData] = useState([{'title':'', 'contents':'', 'regId':'', 'regDate':'', 'hits':0}]);
+    
+    let [chartData,setChartData] = useState([]);
+
+    useEffect(() =>{
+        Axios.get("/board").then(response =>{
+            console.log('change');
+            console.log(response.data);
+            const data = response.data;
+            setBoardData(data);
+            setChartData(data.map(e=>{
+                return e.hits;
+            }));
+        })
+    },[]);
+
+
+
     return (
         <div>
-           {/* <Table>
+           <Table>
                <TableHead>
+                <TableRow>
                    <TableCell>번호</TableCell>
                    <TableCell>제목</TableCell>
                    <TableCell>작성자</TableCell>
+                </TableRow>
                </TableHead>
                <TableBody>
-                   <TableCell>작성자</TableCell>
-                   <TableCell>제목</TableCell>
-                   <TableCell>제목</TableCell>
-                    
+                {boardData.map((e)=>{
+                    return(
+                        <TableRow>
+                            <TableCell>{e.title}</TableCell>
+                            <TableCell>{e.contents}</TableCell>
+                            <TableCell>{e.regId}</TableCell>
+                        </TableRow>
+                    )
+                })}
                </TableBody>
-           </Table> */}
+           </Table>
+           <BoardBody chartData={chartData}></BoardBody>
         </div>
-
     );
 }
 
